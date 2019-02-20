@@ -40,4 +40,17 @@ Remove the passphrase so that the project can be shared
 openssl rsa -in mongoclient.key -out mongoclient-unenc.key
 ```
 
+Concatenate the key and issues certificate
 
+```
+cat pki/private/mongoclient.key ../enterprise_mongo_ca/pki/issued/mongoclient.crt > mongoclient-key-crt.pem
+```
+
+
+## Connecting to the server
+
+Run the following command
+
+```
+mongo --ssl --port 27717 --host mongoserver admin --verbose --sslCAFile ../enterprise_mongo_ca/pki/ca.crt --sslPEMKeyFile mongoclient-key-crt.pem
+```
